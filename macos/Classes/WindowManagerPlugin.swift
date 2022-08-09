@@ -5,6 +5,10 @@ public class WindowManagerPlugin: NSObject, FlutterPlugin {
     public static var RegisterGeneratedPlugins:((FlutterPluginRegistry) -> Void)?
     
     public static func register(with registrar: FlutterPluginRegistrar) {
+        if (_inited) {
+            // multi window trick
+            return;
+        }
         let channel = FlutterMethodChannel(name: "window_manager", binaryMessenger: registrar.messenger)
         let instance = WindowManagerPlugin(registrar, channel)
         registrar.addMethodCallDelegate(instance, channel: channel)

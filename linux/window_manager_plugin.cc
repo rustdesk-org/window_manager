@@ -7,6 +7,14 @@
   (G_TYPE_CHECK_INSTANCE_CAST((obj), window_manager_plugin_get_type(), \
                               WindowManagerPlugin))
 
+WindowManagerPlugin* plugin_instance;
+bool main_window_initialized = false;
+
+static double bg_color_r = 0.0;
+static double bg_color_g = 0.0;
+static double bg_color_b = 0.0;
+static double bg_color_a = 0.0;
+
 struct _WindowManagerPlugin {
   GObject parent_instance;
   FlPluginRegistrar* registrar;
@@ -1054,6 +1062,11 @@ gboolean on_mouse_press(GSignalInvocationHint* ihint,
 
 void window_manager_plugin_register_with_registrar(
     FlPluginRegistrar* registrar) {
+  if (main_window_initialized) {
+    // multi window trick: avoid register for sub window
+    return;
+  }
+  main_window_initialized = true;
   WindowManagerPlugin* plugin = WINDOW_MANAGER_PLUGIN(
       g_object_new(window_manager_plugin_get_type(), nullptr));
 
