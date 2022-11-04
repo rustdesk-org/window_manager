@@ -10,10 +10,10 @@
 WindowManagerPlugin* plugin_instance;
 bool main_window_initialized = false;
 
-static double bg_color_r = 0.0;
-static double bg_color_g = 0.0;
-static double bg_color_b = 0.0;
-static double bg_color_a = 0.0;
+// static double bg_color_r = 0.0;
+// static double bg_color_g = 0.0;
+// static double bg_color_b = 0.0;
+// static double bg_color_a = 0.0;
 
 struct _WindowManagerPlugin {
   GObject parent_instance;
