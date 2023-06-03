@@ -59,13 +59,19 @@ static FlMethodResponse* set_as_frameless(WindowManagerPlugin* self,
 
 static FlMethodResponse* destroy(WindowManagerPlugin* self) {
   self->_is_prevent_close = false;
-  gtk_window_close(get_window(self));
+  auto w = get_window(self);
+  if (w) {
+    gtk_window_close(w);
+  }
   return FL_METHOD_RESPONSE(
       fl_method_success_response_new(fl_value_new_bool(true)));
 }
 
 static FlMethodResponse* close(WindowManagerPlugin* self) {
-  gtk_window_close(get_window(self));
+  auto w = get_window(self);
+  if (w) {
+    gtk_window_close(w);
+  }
   g_autoptr(FlValue) result = fl_value_new_bool(true);
   return FL_METHOD_RESPONSE(fl_method_success_response_new(result));
 }
