@@ -118,8 +118,6 @@ std::optional<LRESULT> WindowManagerPlugin::HandleWindowProc(HWND hWnd,
     // This must always be first or else the one of other two ifs will execute
     //  when window is in full screen and we don't want that
     if (wParam && window_manager->IsFullScreen()) {
-      NCCALCSIZE_PARAMS* sz = reinterpret_cast<NCCALCSIZE_PARAMS*>(lParam);
-      sz->rgrc[0].bottom -= 3;
       return 0;
     }
 
@@ -134,9 +132,6 @@ std::optional<LRESULT> WindowManagerPlugin::HandleWindowProc(HWND hWnd,
         sz->rgrc[0].right -= 8;
         sz->rgrc[0].bottom -= 9;
       }
-      // This cuts the app at the bottom by one pixel but that's necessary to
-      // prevent jitter when resizing the app
-      sz->rgrc[0].bottom += 1;
       return 0;
     }
 
@@ -388,6 +383,20 @@ void WindowManagerPlugin::HandleMethodCall(
   } else if (method_name.compare("restore") == 0) {
     window_manager->Restore();
     result->Success(flutter::EncodableValue(true));
+  } else if (method_name.compare("isDockable") == 0) {
+    bool value = window_manager->IsDockable();
+    result->Success(flutter::EncodableValue(value));
+  } else if (method_name.compare("isDocked") == 0) {
+    int value = window_manager->IsDocked();
+    result->Success(flutter::EncodableValue(value));
+  } else if (method_name.compare("dock") == 0) {
+    const flutter::EncodableMap& args =
+        std::get<flutter::EncodableMap>(*method_call.arguments());
+    window_manager->Dock(args);
+    result->Success(flutter::EncodableValue(true));
+  } else if (method_name.compare("undock") == 0) {
+    bool value = window_manager->Undock();
+    result->Success(flutter::EncodableValue(value));
   } else if (method_name.compare("isFullScreen") == 0) {
     bool value = window_manager->IsFullScreen();
     result->Success(flutter::EncodableValue(value));

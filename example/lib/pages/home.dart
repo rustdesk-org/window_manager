@@ -246,6 +246,35 @@ class _HomePageState extends State<HomePage> with TrayListener, WindowListener {
                 windowManager.restore();
               },
             ),
+            PreferenceListItem(
+              title: const Text('dock / undock'),
+              onTap: () async {
+                DockSide? isDocked = await windowManager.isDocked();
+                BotToast.showText(text: 'isDocked: $isDocked');
+              },
+              accessoryView: Row(
+                children: [
+                  CupertinoButton(
+                    child: const Text('dock left'),
+                    onPressed: () async {
+                      windowManager.dock(side: DockSide.left, width: 500);
+                    },
+                  ),
+                  CupertinoButton(
+                    child: const Text('dock right'),
+                    onPressed: () async {
+                      windowManager.dock(side: DockSide.right, width: 500);
+                    },
+                  ),
+                  CupertinoButton(
+                    child: const Text('undock'),
+                    onPressed: () async {
+                      windowManager.undock();
+                    },
+                  ),
+                ],
+              ),
+            ),
             PreferenceListSwitchItem(
               title: const Text('isFullScreen / setFullScreen'),
               onTap: () async {
