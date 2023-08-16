@@ -212,12 +212,13 @@ packages:
     source: hosted
     version: "1.2.3"
   screen_retriever:
-    dependency: "direct main"
+    dependency: transitive
     description:
-      name: screen_retriever
-      sha256: "4931f226ca158123ccd765325e9fbf360bfed0af9b460a10f960f9bb13d58323"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: "fix/nullptr_to_fl_value_new_string"
+      resolved-ref: "10ebd5a3ba59a3f88baf74ced442d21dcd8d8eea"
+      url: "https://github.com/fufesou/screen_retriever.git"
+    source: git
     version: "0.1.6"
   sky_engine:
     dependency: transitive

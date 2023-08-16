@@ -25,9 +25,11 @@ dependencies:
 
   path: ^1.8.0
   screen_retriever: #^0.1.2
+  # For tmp fix of screen_retriever
+  # https://github.com/leanflutter/screen_retriever/pull/15
     git:
-      url: https://github.com/Kingtous/rustdesk_screen_retriever.git
-      ref: 406b9b0
+      url: https://github.com/fufesou/screen_retriever.git
+      ref: fix/nullptr_to_fl_value_new_string
 
 dev_dependencies:
   dependency_validator: ^3.0.0
