@@ -5,6 +5,10 @@ public class WindowManagerPlugin: NSObject, FlutterPlugin {
     public static var RegisterGeneratedPlugins:((FlutterPluginRegistry) -> Void)?
     
     public static func register(with registrar: FlutterPluginRegistrar) {
+        if (WindowManagerPlugin._inited) {
+            // multi window trick
+            return;
+        }
         let channel = FlutterMethodChannel(name: "window_manager", binaryMessenger: registrar.messenger)
         let instance = WindowManagerPlugin(registrar, channel)
         registrar.addMethodCallDelegate(instance, channel: channel)
@@ -19,7 +23,7 @@ public class WindowManagerPlugin: NSObject, FlutterPlugin {
         }
     }
     
-    private var _inited: Bool = false
+    private static var _inited: Bool = false
     private var windowManager: WindowManager = WindowManager()
     
     public init(_ registrar: FlutterPluginRegistrar, _ channel: FlutterMethodChannel) {
@@ -29,13 +33,13 @@ public class WindowManagerPlugin: NSObject, FlutterPlugin {
     }
     
     private func ensureInitialized() {
-        if (!_inited) {
+        if (!WindowManagerPlugin._inited) {
             windowManager.mainWindow = mainWindow
             windowManager.onEvent = {
                 (eventName: String) in
                 self._emitEvent(eventName)
             }
-            _inited = true
+            WindowManagerPlugin._inited = true
         }
     }
     

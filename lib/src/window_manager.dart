@@ -394,6 +394,21 @@ class WindowManager {
     );
   }
 
+  /// Resize window and move the window to a position aligned with the screen.
+  Future<void> setSizeAlignment(
+    Size size,
+    Alignment alignment, {
+    bool animate = false,
+  }) async {
+    Offset position = await calcWindowPosition(size, alignment);
+    await setBounds(
+      null,
+      size: size,
+      animate: animate,
+    );
+    await this.setPosition(position, animate: animate);
+  }
+
   /// Returns `Offset` - Contains the window's current position.
   Future<Offset> getPosition() async {
     Rect bounds = await getBounds();

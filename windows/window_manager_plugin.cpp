@@ -14,6 +14,8 @@
 
 #include "window_manager.cpp"
 
+bool main_window_initialized = false;
+
 namespace {
 
 bool IsWindows11OrGreater() {
@@ -567,7 +569,11 @@ void WindowManagerPlugin::HandleMethodCall(
 
 void WindowManagerPluginRegisterWithRegistrar(
     FlutterDesktopPluginRegistrarRef registrar) {
+  if (main_window_initialized) {
+    return;
+  }
   WindowManagerPlugin::RegisterWithRegistrar(
       flutter::PluginRegistrarManager::GetInstance()
           ->GetRegistrar<flutter::PluginRegistrarWindows>(registrar));
+  main_window_initialized = true;
 }
