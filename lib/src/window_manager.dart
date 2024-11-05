@@ -344,9 +344,9 @@ class WindowManager {
   }
 
   /// Returns `Rect` - The bounds of the window as Object.
-  Future<Rect> getBounds() async {
+  Future<Rect> getBounds({bool ignoreDevicePixelRatio = false}) async {
     final Map<String, dynamic> arguments = {
-      'devicePixelRatio': getDevicePixelRatio(),
+      'devicePixelRatio': ignoreDevicePixelRatio ? 1.0 : getDevicePixelRatio(),
     };
     final Map<dynamic, dynamic> resultData = await _channel.invokeMethod(
       'getBounds',
@@ -367,9 +367,10 @@ class WindowManager {
     Offset? position,
     Size? size,
     bool animate = false,
+    bool ignoreDevicePixelRatio = false,
   }) async {
     final Map<String, dynamic> arguments = {
-      'devicePixelRatio': getDevicePixelRatio(),
+      'devicePixelRatio': ignoreDevicePixelRatio ? 1.0 : getDevicePixelRatio(),
       'x': bounds?.topLeft.dx ?? position?.dx,
       'y': bounds?.topLeft.dy ?? position?.dy,
       'width': bounds?.size.width ?? size?.width,
@@ -380,17 +381,20 @@ class WindowManager {
   }
 
   /// Returns `Size` - Contains the window's width and height.
-  Future<Size> getSize() async {
-    Rect bounds = await getBounds();
+  Future<Size> getSize({bool ignoreDevicePixelRatio = false}) async {
+    Rect bounds =
+        await getBounds(ignoreDevicePixelRatio: ignoreDevicePixelRatio);
     return bounds.size;
   }
 
   /// Resizes the window to `width` and `height`.
-  Future<void> setSize(Size size, {bool animate = false}) async {
+  Future<void> setSize(Size size,
+      {bool animate = false, bool ignoreDevicePixelRatio = false}) async {
     await setBounds(
       null,
       size: size,
       animate: animate,
+      ignoreDevicePixelRatio: ignoreDevicePixelRatio,
     );
   }
 
@@ -410,17 +414,20 @@ class WindowManager {
   }
 
   /// Returns `Offset` - Contains the window's current position.
-  Future<Offset> getPosition() async {
-    Rect bounds = await getBounds();
+  Future<Offset> getPosition({bool ignoreDevicePixelRatio = false}) async {
+    Rect bounds =
+        await getBounds(ignoreDevicePixelRatio: ignoreDevicePixelRatio);
     return bounds.topLeft;
   }
 
   /// Moves window to position.
-  Future<void> setPosition(Offset position, {bool animate = false}) async {
+  Future<void> setPosition(Offset position,
+      {bool animate = false, bool ignoreDevicePixelRatio = false}) async {
     await setBounds(
       null,
       position: position,
       animate: animate,
+      ignoreDevicePixelRatio: ignoreDevicePixelRatio,
     );
   }
 
