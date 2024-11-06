@@ -5,6 +5,10 @@ on:
     branches: [main]
   pull_request:
     types: [opened, reopened]
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: "3.19.6"
 
 jobs:
   build-linux:
@@ -12,19 +16,25 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
       - run: |
           sudo apt-get update -y
           sudo apt-get install -y ninja-build libgtk-3-dev libappindicator3-dev xvfb
       - run: flutter config --enable-linux-desktop
-      - run: cd example && flutter build linux -v
+      - run: cd example && flutter --version && flutter build linux -v
       - run: cd example && xvfb-run -a flutter test integration_test -v
   build-macos:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
       - run: flutter config --enable-macos-desktop
-      - run: cd example &&  flutter build macos -v
+      - run: cd example && flutter --version && flutter build macos -v
       # Blocked by https://github.com/flutter/flutter/issues/118469
       # - run: cd example && flutter test integration_test -v
   build-windows:
@@ -32,5 +42,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: subosito/flutter-action@v2
-      - run: cd example && flutter build windows -v
+        with:
+          channel: stable
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+      - run: cd example && flutter --version && flutter build windows -v
       - run: cd example && flutter test integration_test -v
